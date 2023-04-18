@@ -1,0 +1,53 @@
+\section{Satellite galaxies around a massive central - part 2}
+
+Because I could copy all of the functions from the working classes, 
+my code for those is similar to my sister\'s, Liz van der Kamp (s2135752). 
+For this exercise I needed to use different minimizing functions, LU decomposition for Levenberg-Marquardt
+and an integrating function from a previous handin/working class.
+I used pieces of code from handin2 excercise 1, like my n(x) function and my Romberg integration code.
+
+The code I wrote for this is:
+\lstinputlisting{NUR_handin3Q1.py}
+
+\subsection*{a}
+
+For this part I used a Golden Section Search algorithm on -N(x) = -$4\pi *x^2$n(x) to find the maximum of N(x),
+because Golden Section search finds the minimum so we find the minimum of the flipped function. I use Golden Section
+Search because it is a simple 1 dimensional algorithm which should find the minimum/maximum accurately yet quickly.
+Before choosing an initial bracket to search, I plot the function to inspect it. I see that the maximum is around 
+x~0.5 so as initial bracket I do [0,0.5,5] with a maximum of 100 iterations and an accuracy of 10$^{-15]$. 
+With this I find a maximum at x~0.23, the exact value is
+\lstinputlisting{NUR3Q1maxim.txt}
+
+To make sure I found the maximum, I plotted the found maximum and the function in Fig \ref{fig1}.
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=0.9\linewidth]{NUR3Q1plot1.pdf}
+  \caption{Plot corresponding to exercise 1a, showing  N(x) and the maximum found by Golden section search.}
+  \label{fig:fig1}
+\end{figure} 
+
+
+\subsection*{b}
+
+For this part I used the example python code to read in files. Then, in order to choose bins, I inspect the data
+The range of the function is 0 until 5, so I want real spaced bins since we start at 0 and the data already looks
+Poissonian in real space. Furthermore, the biggest amount of data points we have is around 20 000 000, which is about 
+5 * $10^{-8}$ inverted. N(x) reaches this value at about x~2, so at this point we expect a bin to have at most 1 count,
+which is why I take bins in a range from 0 until 2. The first dataset might still have some counts above x~2, but
+I didn't want the other data sets to have too many zero bins, so I take [0,2].
+Then for the number of bins I look at the histograms to see when they look somewhat smooth and Poissonian, and at 
+25 bins I find a good balance between enough bins for the big datasets and not too many for the datasets with less
+datapoints.
+
+For each dataset, the mean number of satellites, $\lange N_{sat} \rangle$ is the number of satellites divided by
+the number of halos, aka it is the length of the dataset divided by the number of halos. 
+The mean number of satellites per halo in each radial bin, N$_i$ is the number of satellites in a bin divided by
+the number of halos and divided by the binwidth. 
+
+Then I minimize a $\chi^2$ using a Levenberg-Marquardt routine and give the variance per bin by integrating N(x) 
+over the x-range of the bins. I also calculate the normalization factor A given the initial guess for [a,b,c] =
+[2.2, 0.5, 1.6], which I picked based on the values given in (a) and then tweaked a little to fit the data better.
+A is a global variable so that I don't have to put it in the function itself and I can give the function as a variable
+in the Levenberg-Marquardt function. A is recalculated every time a new guess for [a,b,c] is given, and I do so
+by integrating as in handin2 question 1. 
