@@ -51,3 +51,57 @@ over the x-range of the bins. I also calculate the normalization factor A given 
 A is a global variable so that I don't have to put it in the function itself and I can give the function as a variable
 in the Levenberg-Marquardt function. A is recalculated every time a new guess for [a,b,c] is given, and I do so
 by integrating as in handin2 question 1. 
+The $\lange N_{sat} \rangle$, best fit a,b,c and minimum $\chi^2$ for each dataset are: 1)
+\lstinputlisting{NUR3Q1chi21.txt}
+2)
+\lstinputlisting{NUR3Q1chi22.txt}
+3)
+\lstinputlisting{NUR3Q1chi23.txt}
+4)
+\lstinputlisting{NUR3Q1chi24.txt}
+5)
+\lstinputlisting{NUR3Q1chi25.txt}
+
+\begin{figure}[ht]
+    \begin{subfigure}{.49\textwidth}
+       \centering
+    \includegraphics[scale=0.5]{NUR3Q1plotchi21.pdf}
+    \centering
+    \subcaption{}
+    \label{}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}{.49\textwidth}
+       \centering
+    \includegraphics[scale=0.5]{NUR3Q1plotchi22.pdf}
+    \centering
+    \subcaption{}
+    \label{}
+    \end{subfigure}
+     \begin{subfigure}{.49\textwidth}
+       \centering
+    \includegraphics[scale=0.5]{NUR3Q1plotchi23.pdf}
+    \centering
+    \subcaption{}
+    \label{}
+    \end{subfigure}
+     \begin{subfigure}{.49\textwidth}
+       \centering
+    \includegraphics[scale=0.5]{NUR3Q1plotchi24.pdf}
+    \centering
+    \subcaption{}
+    \label{}
+    \end{subfigure}
+     \begin{subfigure}{.49\textwidth}
+       \centering
+    \includegraphics[scale=0.5]{NUR3Q1plotchi25.pdf}
+    \centering
+    \subcaption{}
+    \label{}
+    \end{subfigure}
+    \caption{loglog plots of the binned data and the $\chi^2$ fits for the 5 datasets. For the first dataset, the Levenberg-Marquardt routine had a tough time finding a good fit.}
+    
+\end{figure}
+
+
+
