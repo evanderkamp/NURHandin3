@@ -71,13 +71,13 @@ np.savetxt("NUR3Q1maxim.txt", [maxim])
 xes = np.linspace(0,5,1000)
 
 plt.plot(xes,N(xes))
-plt.yscale('log')
+#plt.yscale('log')
 plt.scatter(maxim, N(maxim), label='maximum found by Golden')
 plt.ylabel("N(x)")
 plt.xlabel("x")
 plt.legend()
 plt.savefig("NUR3Q1plot1.pdf")
-#plt.show()
+plt.close()
 
 
 
@@ -334,9 +334,9 @@ def LM(xi, yi, func, sig2, p0, derivjes, maxiter, i=0, lambd=10**(-3), w=10):
         lambd = lambd/w
 
 #calculate new A given with the new p
-    	global Aintgr
-    	A_inv = Romberg(50,6,0,5,n2, pnew)
-    	Aintgr = 1/A_inv
+        global Aintgr
+        A_inv = Romberg(50,6,0,5,n2, pnew)
+        Aintgr = 1/A_inv
         
 #if chi doesnt really change anymore, return
         if np.abs(chinew - chi0) < 10**(-3):
@@ -468,6 +468,10 @@ def n2(x,p):
 	"""Returns n(x)*x^2 /(A*Nsat)"""
 	return  4*np.pi *(x**(p[0]-1)/(p[1]**(p[0]-3)))*np.exp(-(x/p[1])**p[2])
 
+
+	
+
+
 for i in range(1,6):
 #load in data
 	r1, nhalo1 = readfile('satgals_m1'+str(i)+'.txt')
@@ -520,9 +524,10 @@ for i in range(1,6):
 	plt.title("Dataset "+str(i))
 	plt.legend(loc='lower left')
 	plt.savefig("NUR3Q1plotchi2"+str(i)+".pdf")
+	plt.close()
 	
-#1c
-#for a Poisson likelihood we want to minimize minus ln Likelihood, and to use the QuasiNewton method we also need the derivative of the lnLikelihood
+	#1c
+	#for a Poisson likelihood we want to minimize minus ln Likelihood, and to use the QuasiNewton method we also need the derivative of the lnLikelihood
 
 	def LnLike(p, func=Nfit, x=xs, y=Nmean1):
 		"""Returns the -ln of the poissonian likelood of a model func with parameters p given the data x,y"""
@@ -530,7 +535,7 @@ for i in range(1,6):
 		global Aintgr
 		A_inv = Romberg(25,4,0,5,n2, p)
 		Aintgr = 1/A_inv
-	
+
 		#var = np.zeros(len(bins)-1)
 		#for j in range(len(bins)-1):
 			#var[j] = Romberg(25,3,bins[j],bins[j+1],Nfit, p)
@@ -542,14 +547,24 @@ for i in range(1,6):
 		global Aintgr
 		A_inv = Romberg(25,4,0,5,n2, p)
 		Aintgr = 1/A_inv
-	
+
 		#var = np.zeros(len(bins)-1)
 		#for j in range(len(bins)-1):
 			#var[j] = Romberg(25,3,bins[j],bins[j+1],Nfit, p)
 		return np.sum((y/func(x,p) -1)* deriv(x,p), axis=1)
 	
-	p0 = [2.0,0.5,1.6]
+	p0 = [1.99,0.5,1.6]
 
+#calculate the initial A given p0 
+
+	A_inv = Romberg(50,6,0,5,n2, p0)
+	Aintgr = 1/A_inv
+	#print("initial A", Aintgr)
+
+#calculate the initial variances
+	var = np.zeros(len(bins)-1)
+	for j in range(len(bins)-1):
+		var[j] = Romberg(50,6,bins[j],bins[j+1],Nfit, p0)
 	
 	ppois, pall = QuasiNewt(LnLike, p0, maxiter=70, accur=10**(-8), grad=dLnLike)
 	
@@ -574,6 +589,7 @@ for i in range(1,6):
 	plt.xscale('log')
 	plt.legend(loc='lower left')
 	plt.savefig("NUR3Q1plotpois"+str(i)+".pdf")
+	plt.close()
 	
 	
 #1d
@@ -597,11 +613,11 @@ for i in range(1,6):
 			
 	print("G's", Gchi2, Gpois)
 	print(np.sum(Ni1), np.sum(Nifitchi2), np.sum(Nifitpois))
-#calculate Q
+#calculate Q with the UPPER incomplete gamma function (not the lower)
 
 	def Q(Qx,Qk):
 		#print("incgam, gam",sc.gammainc(Qk*0.5,Qx*0.5), sc.gamma(Qk*0.5))
-		return 1-(sc.gammainc(Qk*0.5,Qx*0.5)/sc.gamma(Qk*0.5))
+		return 1-(sc.gammaincc(Qk*0.5,Qx*0.5)/sc.gamma(Qk*0.5))
 
 #we have that x=G, and k is the number of data points minus the number of constraints, so data points is number of bins (25), number of constraints is 4 (number of fit params +1)
 
@@ -611,7 +627,8 @@ for i in range(1,6):
 	
 	print("Q's", Qchi2, Qpois)
 	
-	np.savetxt("NUR3Q1chi2pois.txt", [Nsats, pend[0], pend[1], pend[2], chiend, ppois[0], ppois[1], ppois[2], Lnpois])
-	np.savetxt("NUR3Q1GQ.txt", [Gchi2, Gpois, Qchi2, Qpois])
+	np.savetxt("NUR3Q1chi2"+str(i)+".txt", ["Nsats, a,b,c, chi2", Nsats, pend[0], pend[1], pend[2], chiend])
+	np.savetxt("NUR3Q1pois"+str(i)+".txt", ["a,b,c, -lnL", ppois[0], ppois[1], ppois[2], Lnpois])
+	np.savetxt("NUR3Q1GQ"+str(i)+".txt", ["G chi2, G poiss, Q chi2, Q poiss", Gchi2, Gpois, Qchi2, Qpois])
 	
 	
