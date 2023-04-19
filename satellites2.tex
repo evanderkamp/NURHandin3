@@ -170,4 +170,21 @@ In Fig. \ref{fig:fig3} you can see the Poisson fits found by the Quasi Newton ro
 
 \subsection*{d}
 
-To do the G-test, I need integer counts for the observed counts, so I use the unnormalized 
+To do the G-test, I need integer counts for the observed counts, so I use the unnormalized bincounts and unnormalize the fit counts too to be able to compare them and get a sensible answer out of the G test.
+Then, to calculate Q I import the upper incomplete gamma function and the gamma function from scipy. The number of degrees of freedom is the number of data points minus the fit parameters minus 1, which in my case is 25 - 3 - 1 = 21. (The minus one comes from the fact that not all parameters are independent.)
+Using k=21 and the calculated G for the fit I calculate Q, and the results are:
+in order we have the G for the $\chi^2$ fit, G for the poisson fit, Q for the $\chi^2$ fit, and Q for the poisson fit. Per dataset the output is: 
+1)
+\lstinputlisting{NUR3Q1GQ1.txt}
+2)
+\lstinputlisting{NUR3Q1GQ2.txt}
+3)
+\lstinputlisting{NUR3Q1GQ3.txt}
+4)
+\lstinputlisting{NUR3Q1GQ4.txt}
+5)
+\lstinputlisting{NUR3Q1GQ5.txt}
+For the first 2 datasets the G is so big that both Q's are 1.0, even for the first $\chi^2$ fit, which by eye does not look optimal. This is most likely because the counts in the bins are so large. 
+For dataset 3 and 4 the poisson fit gives a better Q value than the $\chi^2$ fit, but it is not by much. 
+And for dataset 5 the $\chi^2$ Q is marginally better than the one for poisson, but they are almost equal. 
+It makes sense that for the datasets with less counts the poisson is better because the more counts, the more the distribution starts to look like a gaussian instead of poissonian. For dataset 5 it is probably by chance that the $\chi^2$ fit gives a good Q value. 
