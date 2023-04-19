@@ -106,4 +106,68 @@ In Fig. \ref{fig:fig2} you can see the $\chi^2$ fits found by the Levenberg-Marq
 \end{figure}
 
 
+\subsection*{c}
 
+I use the same bins as in (b) and write a function which calculates the minus log likelihood of a Poisson fit and the derivatives of that with respect to the fit parameters. In both functions I recalculate A to make sure that the normalization for each fit is (somewhat) correct. In the function I don't calculate A as accurately as for the initial and final fit value so that it doesn't take too long. 
+Now, I use a Quasi Newton routine to find the minimum of the minus log likelihood with an intial lambda of $10^{-3}$. To find the optimal step size lambda, I do line minimization using Golden Section Search, but sometimes the minus log likelihood doesn't exist for some parameters, so I check for NaNs before deciding between which lambda values to look. If there are no NaNs for either 1 or -1 for lambda, I search for a lambda between -15 until 15. Otherwise, I look for smaller lambda. 
+For the initial guess I looked at the $\chi^2$ fit values and thus chose [1.99,0.5,1.6] as initial guess for a,b,c and ran the Quasi Newton routine, again scaling the final fit so the total number for the data and the fit are the same.
+
+The best fit a,b,c and minimum $-\lnL$ for each dataset are: 1)
+\lstinputlisting{NUR3Q1pois1.txt}
+2)
+\lstinputlisting{NUR3Q1pois2.txt}
+3)
+\lstinputlisting{NUR3Q1pois3.txt}
+4)
+\lstinputlisting{NUR3Q1pois4.txt}
+5)
+\lstinputlisting{NUR3Q1pois5.txt}
+
+
+In Fig. \ref{fig:fig3} you can see the Poisson fits found by the Quasi Newton routine. Only for the third dataset the fit is not optimal, which could be due to the initial parameters given to the routine or the fact that it found a local minimum instead of a global minimum. 
+
+\begin{figure}[ht]
+    \begin{subfigure}{.49\textwidth}
+       \centering
+    \includegraphics[scale=0.5]{NUR3Q1plotpois1.pdf}
+    \centering
+    \subcaption{}
+    \label{}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}{.49\textwidth}
+       \centering
+    \includegraphics[scale=0.5]{NUR3Q1plotpois2.pdf}
+    \centering
+    \subcaption{}
+    \label{}
+    \end{subfigure}
+     \begin{subfigure}{.49\textwidth}
+       \centering
+    \includegraphics[scale=0.5]{NUR3Q1plotpois3.pdf}
+    \centering
+    \subcaption{}
+    \label{}
+    \end{subfigure}
+     \begin{subfigure}{.49\textwidth}
+       \centering
+    \includegraphics[scale=0.5]{NUR3Q1plotpois4.pdf}
+    \centering
+    \subcaption{}
+    \label{}
+    \end{subfigure}
+     \begin{subfigure}{.49\textwidth}
+       \centering
+    \includegraphics[scale=0.5]{NUR3Q1plotpois5.pdf}
+    \centering
+    \subcaption{}
+    \label{}
+    \end{subfigure}
+    \caption{loglog plots of the binned data and the Poisson fits for the 5 datasets. For the third dataset, the Quasi Newton routine had a tough time finding a good fit.}
+    \label{fig:fig3}
+\end{figure}
+
+
+\subsection*{d}
+
+To do the G-test, I need integer counts for the observed counts, so I use the unnormalized 
