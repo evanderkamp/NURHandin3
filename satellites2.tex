@@ -6,10 +6,11 @@ For this exercise I needed to use different minimizing functions, LU decompositi
 and an integrating function from a previous handin/working class.
 I used pieces of code from handin2 excercise 1, like my n(x) function and my Romberg integration code.
 
-The code I wrote for this is:
-\lstinputlisting{NUR_handin3Q1.py}
 
 \subsection*{a}
+
+The code I wrote for this is:
+\lstinputlisting[lastline=83]{NUR_handin3Q1.py}
 
 For this part I used a Golden Section Search algorithm on -N(x) = -$4\pi *x^2$n(x) to find the maximum of N(x),
 because Golden Section search finds the minimum so we find the minimum of the flipped function. I use Golden Section
@@ -30,6 +31,10 @@ To make sure I found the maximum, I plotted the found maximum and the function i
 
 \subsection*{b}
 
+The code I wrote for this (and a part of c) is:
+\lstinputlisting[firstline=83, lastline=528]{NUR_handin3Q1.py}
+
+
 For this part I used the example python code to read in files. Then, in order to choose bins, I inspect the data
 The range of the function is 0 until 5, so I want real spaced bins since we start at 0 and the data already looks
 Poissonian in real space. Furthermore, the biggest amount of data points we have is around 20 000 000, which is about 
@@ -49,17 +54,18 @@ Then I minimize a $\chi^2$ using a Levenberg-Marquardt routine and give the vari
 over the x-range of the bins. I also calculate the normalization factor A given the initial guess for [a,b,c] =
 [2.2, 0.5, 1.6], which I picked based on the values given in (a) and then tweaked a little to fit the data better.
 A is a global variable so that I don't have to put it in the function itself and I can give the function as a variable
-in the Levenberg-Marquardt function. A is recalculated every time a new guess for [a,b,c] is given, and I do so
+in the Levenberg-Marquardt function (this is the same as Liz because the way our functions are build up are the same and we don't know how to do it differently). A is recalculated every time a new guess for [a,b,c] is given, and I do so
 by integrating as in handin2 question 1. 
-The $\langle N_{sat} \rangle$, best fit a,b,c and minimum $\chi^2$ for each dataset are: 1)
+The $\langle N_{sat} \rangle$, best fit a,b,c and minimum $\chi^2$ for each dataset are: 
+1)
 \lstinputlisting{NUR3Q1chi21.txt}
-2)
+2) $\langle N_{sat} \rangle$, best fit a,b,c and minimum $\chi^2$
 \lstinputlisting{NUR3Q1chi22.txt}
-3)
+3) $\langle N_{sat} \rangle$, best fit a,b,c and minimum $\chi^2$
 \lstinputlisting{NUR3Q1chi23.txt}
-4)
+4) $\langle N_{sat} \rangle$, best fit a,b,c and minimum $\chi^2$
 \lstinputlisting{NUR3Q1chi24.txt}
-5)
+5) $\langle N_{sat} \rangle$, best fit a,b,c and minimum $\chi^2$
 \lstinputlisting{NUR3Q1chi25.txt}
 
 In Fig. \ref{fig:fig2} you can see the $\chi^2$ fits found by the Levenberg-Marquardt routine. Only for the first dataset the fit is not optimal, which could be due to the initial parameters given to the routine or the fact that it found a local minimum instead of a global minimum. 
@@ -108,19 +114,23 @@ In Fig. \ref{fig:fig2} you can see the $\chi^2$ fits found by the Levenberg-Marq
 
 \subsection*{c}
 
+The code I wrote for this is:
+\lstinputlisting[firstline=528, lastline=593]{NUR_handin3Q1.py}
+
 I use the same bins as in (b) and write a function which calculates the minus log likelihood of a Poisson fit and the derivatives of that with respect to the fit parameters. In both functions I recalculate A to make sure that the normalization for each fit is (somewhat) correct. In the function I don't calculate A as accurately as for the initial and final fit value so that it doesn't take too long. 
 Now, I use a Quasi Newton routine to find the minimum of the minus log likelihood with an intial lambda of $10^{-3}$. To find the optimal step size lambda, I do line minimization using Golden Section Search, but sometimes the minus log likelihood doesn't exist for some parameters, so I check for NaNs before deciding between which lambda values to look. If there are no NaNs for either 1 or -1 for lambda, I search for a lambda between -15 until 15. Otherwise, I look for smaller lambda. 
 For the initial guess I looked at the $\chi^2$ fit values and thus chose [1.99,0.5,1.6] as initial guess for a,b,c and ran the Quasi Newton routine, again scaling the final fit so the total number for the data and the fit are the same.
 
-The best fit a,b,c and minimum $-\ln L$ for each dataset are: 1)
+The best fit a,b,c and minimum $-\ln L$ for each dataset are: 
+1)
 \lstinputlisting{NUR3Q1pois1.txt}
-2)
+2) best fit a,b,c and minimum $-\ln L$
 \lstinputlisting{NUR3Q1pois2.txt}
-3)
+3) best fit a,b,c and minimum $-\ln L$
 \lstinputlisting{NUR3Q1pois3.txt}
-4)
+4) best fit a,b,c and minimum $-\ln L$
 \lstinputlisting{NUR3Q1pois4.txt}
-5)
+5) best fit a,b,c and minimum $-\ln L$
 \lstinputlisting{NUR3Q1pois5.txt}
 
 
@@ -170,20 +180,25 @@ In Fig. \ref{fig:fig3} you can see the Poisson fits found by the Quasi Newton ro
 
 \subsection*{d}
 
+The code I wrote for this is:
+\lstinputlisting[firstline=593]{NUR_handin3Q1.py}
+
 To do the G-test, I need integer counts for the observed counts, so I use the unnormalized bincounts and unnormalize the fit counts too to be able to compare them and get a sensible answer out of the G test.
 Then, to calculate Q I import the upper incomplete gamma function and the gamma function from scipy. The number of degrees of freedom is the number of data points minus the fit parameters minus 1, which in my case is 25 - 3 - 1 = 21. (The minus one comes from the fact that not all parameters are independent.)
 Using k=21 and the calculated G for the fit I calculate Q, and the results are:
 in order we have the G for the $\chi^2$ fit, G for the poisson fit, Q for the $\chi^2$ fit, and Q for the poisson fit. Per dataset the output is: 
 1)
 \lstinputlisting{NUR3Q1GQ1.txt}
-2)
+2) G for the $\chi^2$ fit, G for the poisson fit, Q for the $\chi^2$ fit, and Q for the poisson fit
 \lstinputlisting{NUR3Q1GQ2.txt}
-3)
+3) G for the $\chi^2$ fit, G for the poisson fit, Q for the $\chi^2$ fit, and Q for the poisson fit
 \lstinputlisting{NUR3Q1GQ3.txt}
-4)
+4) G for the $\chi^2$ fit, G for the poisson fit, Q for the $\chi^2$ fit, and Q for the poisson fit
 \lstinputlisting{NUR3Q1GQ4.txt}
-5)
+5) G for the $\chi^2$ fit, G for the poisson fit, Q for the $\chi^2$ fit, and Q for the poisson fit
 \lstinputlisting{NUR3Q1GQ5.txt}
+
+
 For the first 2 datasets the G is so big that both Q's are 1.0, even for the first $\chi^2$ fit, which by eye does not look optimal. This is most likely because the counts in the bins are so large. 
 For dataset 3 and 4 the poisson fit gives a better Q value than the $\chi^2$ fit, but it is not by much. 
 And for dataset 5 the $\chi^2$ Q is marginally better than the one for poisson, but they are almost equal. 
