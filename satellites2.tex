@@ -112,7 +112,7 @@ I use the same bins as in (b) and write a function which calculates the minus lo
 Now, I use a Quasi Newton routine to find the minimum of the minus log likelihood with an intial lambda of $10^{-3}$. To find the optimal step size lambda, I do line minimization using Golden Section Search, but sometimes the minus log likelihood doesn't exist for some parameters, so I check for NaNs before deciding between which lambda values to look. If there are no NaNs for either 1 or -1 for lambda, I search for a lambda between -15 until 15. Otherwise, I look for smaller lambda. 
 For the initial guess I looked at the $\chi^2$ fit values and thus chose [1.99,0.5,1.6] as initial guess for a,b,c and ran the Quasi Newton routine, again scaling the final fit so the total number for the data and the fit are the same.
 
-The best fit a,b,c and minimum $-\lnL$ for each dataset are: 1)
+The best fit a,b,c and minimum $-\ln L$ for each dataset are: 1)
 \lstinputlisting{NUR3Q1pois1.txt}
 2)
 \lstinputlisting{NUR3Q1pois2.txt}
