@@ -19,7 +19,7 @@ x~0.5 so as initial bracket I do [0,0.5,5] with a maximum of 100 iterations and 
 With this I find a maximum at x~0.23, the exact value is
 \lstinputlisting{NUR3Q1maxim.txt}
 
-To make sure I found the maximum, I plotted the found maximum and the function in Fig \ref{fig1}.
+To make sure I found the maximum, I plotted the found maximum and the function in Fig \ref{fig:fig1}.
 \begin{figure}[h!]
   \centering
   \includegraphics[width=0.9\linewidth]{NUR3Q1plot1.pdf}
@@ -40,7 +40,7 @@ Then for the number of bins I look at the histograms to see when they look somew
 25 bins I find a good balance between enough bins for the big datasets and not too many for the datasets with less
 datapoints.
 
-For each dataset, the mean number of satellites, $\lange N_{sat} \rangle$ is the number of satellites divided by
+For each dataset, the mean number of satellites, $\langle N_{sat} \rangle$ is the number of satellites divided by
 the number of halos, aka it is the length of the dataset divided by the number of halos. 
 The mean number of satellites per halo in each radial bin, N$_i$ is the number of satellites in a bin divided by
 the number of halos and divided by the binwidth. 
@@ -51,7 +51,7 @@ over the x-range of the bins. I also calculate the normalization factor A given 
 A is a global variable so that I don't have to put it in the function itself and I can give the function as a variable
 in the Levenberg-Marquardt function. A is recalculated every time a new guess for [a,b,c] is given, and I do so
 by integrating as in handin2 question 1. 
-The $\lange N_{sat} \rangle$, best fit a,b,c and minimum $\chi^2$ for each dataset are: 1)
+The $\langle N_{sat} \rangle$, best fit a,b,c and minimum $\chi^2$ for each dataset are: 1)
 \lstinputlisting{NUR3Q1chi21.txt}
 2)
 \lstinputlisting{NUR3Q1chi22.txt}
