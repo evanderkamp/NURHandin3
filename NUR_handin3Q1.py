@@ -627,8 +627,8 @@ for i in range(1,6):
 	
 	print("Q's", Qchi2, Qpois)
 	
-	np.savetxt("NUR3Q1chi2"+str(i)+".txt", ["Nsats, a,b,c, chi2", Nsats, pend[0], pend[1], pend[2], chiend])
-	np.savetxt("NUR3Q1pois"+str(i)+".txt", ["a,b,c, -lnL", ppois[0], ppois[1], ppois[2], Lnpois])
-	np.savetxt("NUR3Q1GQ"+str(i)+".txt", ["G chi2, G poiss, Q chi2, Q poiss", Gchi2, Gpois, Qchi2, Qpois])
+	np.savetxt("NUR3Q1chi2"+str(i)+".txt", [Nsats, pend[0], pend[1], pend[2], chiend])
+	np.savetxt("NUR3Q1pois"+str(i)+".txt", [ppois[0], ppois[1], ppois[2], Lnpois])
+	np.savetxt("NUR3Q1GQ"+str(i)+".txt", [Gchi2, Gpois, Qchi2, Qpois])
 	
 	
